@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Test DPIB: Garis & Geometri</title>
+  <style>
+    :root { --primary: #1a73e8; --success: #34a853; --danger: #ea4335; --gray: #e0e0e0; }
+    body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 15px; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gray); padding-bottom: 10px; }
+    .timer { font-size: 1.2rem; font-weight: bold; color: #d93025; background: #fce8e6; padding: 5px 12px; border-radius: 5px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    .nav-grid { display: flex; gap: 8px; flex-wrap: wrap; margin: 15px 0; }
+    .nav-btn { width: 36px; height: 36px; border: none; background: var(--gray); font-weight: bold; border-radius: 5px; cursor: pointer; }
+    .nav-btn.answered { background: var(--primary); color: #fff; }
+    .nav-btn.correct { background: var(--success); color: #fff; }
+    .nav-btn.wrong { background: var(--danger); color: #fff; }
+    .card { background: #fafafa; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    textarea { width: 100%; height: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .checkbox-group label { font-weight: normal; cursor: pointer; }
+    .btn-submit { background: var(--success); color: #fff; padding: 12px 24px; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; width: 100%; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+    .modal-content { background: #fff; padding: 25px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; }
+    .modal-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
+    .modal-btns button { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+    .explanation { display: none; background: #e8f0fe; border-left: 4px solid var(--primary); padding: 10px; margin-top: 10px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>Post-Test: Garis & Geometri</h2>
+    <div class="timer" id="timer">25:00</div>
+  </div>
+
+  <div id="identity-section" style="margin-top: 15px;">
+    <h3>Identitas Siswa</h3>
+    <div class="form-group"><label>Nama Lengkap</label><input type="text" id="nama" required placeholder="Masukkan Nama"></div>
+    <div class="form-group"><label>Nomor Presensi</label><input type="text" id="presensi" required placeholder="Masukkan No. Presensi"></div>
+    <div class="form-group"><label>Kelas</label><input type="text" id="kelas" required placeholder="Contoh: X DPIB 1"></div>
+    <button class="btn-submit" onclick="startQuiz()">Mulai Kuis</button>
+  </div>
+
+  <div id="quiz-section" style="display:none;">
+    <h4>Navigasi Soal</h4>
+    <div class="nav-grid" id="nav-grid"></div>
+
+    <form id="quiz-form">
+      <h4 style="color:var(--primary)">BAGIAN A: URAIAN</h4>
+
+      <div class="card" id="q1">
+        <p><b>1.</b> Bedakan penggunaan <b>Garis Titik-Titik</b> dan <b>Garis Pembatas (Break Line)</b> beserta ketebalannya!</p>
+        <textarea id="ans1" oninput="markAnswered(1)"></textarea>
+        <div class="explanation" id="exp1"><b>Kunci & Pembahasan:</b> Garis Titik-Titik (0,1–0,2 mm): Dinding lama dibongkar / batas rencana pengembangan. Break Line (0,3–0,4 mm): Pemotong pagar/saluran drainase panjang untuk menghemat ruang gambar tanpa mengubah skala.</div>
+      </div>
+
+      <div class="card" id="q2">
+        <p><b>2.</b> Jelaskan ciri visual dan fungsi dari <b>Garis Bertitik Tipis yang Ujungnya Ditebalkan</b>!</p>
+        <textarea id="ans2" oninput="markAnswered(2)"></textarea>
+        <div class="explanation" id="exp2"><b>Kunci & Pembahasan:</b> Ketebalan 0,1–0,2 mm (badan) & 0,6–0,8 mm (ujung panah). Berfungsi menandai arah bidang Potongan A-A/B-B serta menunjukkan sudut pandang gambar potongan vertikal.</div>
+      </div>
+
+      <div class="card" id="q3">
+        <p><b>3.</b> Mengapa garis dimensi dan nat keramik digambar menggunakan <b>Garis Kontinu Tipis (0,1–0,2 mm)</b>?</p>
+        <textarea id="ans3" oninput="markAnswered(3)"></textarea>
+        <div class="explanation" id="exp3"><b>Kunci & Pembahasan:</b> Digunakan untuk menjelaskan detail informasi (dimensi, bukaan, nat, furniture) tanpa merusak atau mengganggu dominasi garis dinding utama.</div>
+      </div>
+
+      <div class="card" id="q4">
+        <p><b>4.</b> Sebutkan penerapan bentuk geometri <b>Poligon (Segi Banyak)</b> serta <b>Jajar Genjang / Belah Ketupat</b> pada elemen bangunan!</p>
+        <textarea id="ans4" oninput="markAnswered(4)"></textarea>
+        <div class="explanation" id="exp4"><b>Kunci & Pembahasan:</b> Poligon: Paving block segi enam, roster/bata ventilasi, gazebo. Jajar Genjang/Belah Ketupat: Ornamen dekoratif, teralis jendela (belah ketupat), motif lantai (jajar genjang).</div>
+      </div>
+
+      <div class="card" id="q5">
+        <p><b>5.</b> Sebutkan elemen bangunan yang menggunakan kombinasi bentuk geometri <b>Persegi</b> dan <b>Persegi Panjang</b>!</p>
+        <textarea id="ans5" oninput="markAnswered(5)"></textarea>
+        <div class="explanation" id="exp5"><b>Kunci & Pembahasan:</b> Persegi: Penampang kolom praktis beton (15x15 cm), pola keramik. Persegi Panjang: Dasar denah ruang, bata, kusen, pintu, jendela.</div>
+      </div>
+
+      <h4 style="color:var(--primary)">BAGIAN B: PILIHAN GANDA (PILIH SEMUA JAWABAN YANG BENAR)</h4>
+
+      <div class="card" id="q6">
+        <p><b>6.</b> Manakah elemen denah berikut yang digambar menggunakan <b>Garis Putus-Putus</b>? (Jawaban &gt; 1)</p>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="q6" value="A" onchange="markAnswered(6)"> A. Proyeksi tritisan / atap</label>
+          <label><input type="checkbox" name="q6" value="B" onchange="markAnswered(6)"> B. Batas void lantai atas</label>
+          <label><input type="checkbox" name="q6" value="C" onchange="markAnswered(6)"> C. Pasangan dinding bata terpotong</label>
+          <label><input type="checkbox" name="q6" value="D" onchange="markAnswered(6)"> D. Posisi kabinet gantung (kitchen set)</label>
+        </div>
+        <div class="explanation" id="exp6"><b>Kunci & Pembahasan:</b> Jawaban Benar: A, B, D. Dinding bata terpotong menggunakan Garis Kontinu Tebal.</div>
+      </div>
+
+      <div class="card" id="q7">
+        <p><b>7.</b> Elemen apa saja yang digambar menggunakan <b>Garis Kontinu Tebal (0,6–0,8 mm)</b>? (Jawaban &gt; 1)</p>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="q7" value="A" onchange="markAnswered(7)"> A. Dinding bata/hebel terpotong</label>
+          <label><input type="checkbox" name="q7" value="B" onchange="markAnswered(7)"> B. Pola nat keramik lantai</label>
+          <label><input type="checkbox" name="q7" value="C" onchange="markAnswered(7)"> C. Kolom struktur utama (15x15 cm)</label>
+          <label><input type="checkbox" name="q7" value="D" onchange="markAnswered(7)"> D. Garis bingkai (border line) kertas</label>
+        </div>
+        <div class="explanation" id="exp7"><b>Kunci & Pembahasan:</b> Jawaban Benar: A, C, D. Nat keramik lantai menggunakan Garis Kontinu Tipis (0,1–0,2 mm).</div>
+      </div>
+
+      <div class="card" id="q8">
+        <p><b>8.</b> Elemen konstruksi mana saja yang menerapkan bentuk geometri <b>Lingkaran</b>? (Jawaban &gt; 1)</p>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="q8" value="A" onchange="markAnswered(8)"> A. Penampang pipa PVC saluran air</label>
+          <label><input type="checkbox" name="q8" value="B" onchange="markAnswered(8)"> B. Sumur resapan dan tiang pancang</label>
+          <label><input type="checkbox" name="q8" value="C" onchange="markAnswered(8)"> C. Detail tangga putar pada denah</label>
+          <label><input type="checkbox" name="q8" value="D" onchange="markAnswered(8)"> D. Potongan fondasi batu kali</label>
+        </div>
+        <div class="explanation" id="exp8"><b>Kunci & Pembahasan:</b> Jawaban Benar: A, B, C. Potongan fondasi batu kali menggunakan bentuk Trapesium.</div>
+      </div>
+
+      <div class="card" id="q9">
+        <p><b>9.</b> Elemen arsitektur mana yang memanfaatkan bentuk <b>Poligon (Segi Banyak)</b>? (Jawaban &gt; 1)</p>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="q9" value="A" onchange="markAnswered(9)"> A. Rangka atap kuda-kuda</label>
+          <label><input type="checkbox" name="q9" value="B" onchange="markAnswered(9)"> B. Pola paving block segi enam</label>
+          <label><input type="checkbox" name="q9" value="C" onchange="markAnswered(9)"> C. Roster / bata ventilasi fasad</label>
+          <label><input type="checkbox" name="q9" value="D" onchange="markAnswered(9)"> D. Bentuk dasar gazebo</label>
+        </div>
+        <div class="explanation" id="exp9"><b>Kunci & Pembahasan:</b> Jawaban Benar: B, C, D. Rangka atap kuda-kuda menggunakan bentuk Segitiga.</div>
+      </div>
+
+      <div class="card" id="q10">
+        <p><b>10.</b> Pernyataan berikut yang <b>BENAR</b> mengenai standar garis gambar teknik DPIB adalah: (Jawaban &gt; 1)</p>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="q10" value="A" onchange="markAnswered(10)"> A. Garis As/Grid menggunakan Garis Putus-Titik (0,3–0,4 mm)</label>
+          <label><input type="checkbox" name="q10" value="B" onchange="markAnswered(10)"> B. Break Line digunakan untuk garis batas pengembangan</label>
+          <label><input type="checkbox" name="q10" value="C" onchange="markAnswered(10)"> C. Garis Kontinu Tipis digunakan untuk garis ukuran dimensi</label>
+          <label><input type="checkbox" name="q10" value="D" onchange="markAnswered(10)"> D. Break Line berfungsi menghemat ruang gambar tanpa mengubah skala</label>
+        </div>
+        <div class="explanation" id="exp10"><b>Kunci & Pembahasan:</b> Jawaban Benar: A, C, D. Batas pengembangan menggunakan Garis Titik-Titik.</div>
+      </div>
+    </form>
+    <button class="btn-submit" onclick="showConfirmModal()">Selesai & Kumpulkan Kuis</button>
+  </div>
+</div>
+
+<div class="modal" id="confirmModal">
+  <div class="modal-content">
+    <h3>Konfirmasi Pengumpulkan</h3>
+    <p>Apakah Anda yakin ingin mengumpulkan jawaban Post-Test ini?</p>
+    <div class="modal-btns">
+      <button style="background:#ccc" onclick="closeConfirmModal()">Batal</button>
+      <button style="background:var(--success); color:#fff" onclick="submitQuiz()">Ya, Kumpulkan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h3>Hasil Kuis Selesai!</h3>
+    <p>Skor Pilihan Ganda Anda: <b id="scoreDisplay" style="font-size:1.4rem; color:var(--primary)">0</b> / 100</p>
+    <p>Pembahasan dan penandaan kunci jawaban telah terbuka.</p>
+    <button style="background:var(--primary); color:#fff" onclick="closeResultModal()">Lihat Detail Jawaban</button>
+  </div>
+</div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzasHeIMVrl_FUCrsYKI3ac-rZxeqEo0BDyiT6BBsWnjZlywgkW0HwcZ128yCZFnaGJhA/exec";
+  const KEY_PG = {
+    6: ["A", "B", "D"],
+    7: ["A", "C", "D"],
+    8: ["A", "B", "C"],
+    9: ["B", "C", "D"],
+    10: ["A", "C", "D"]
+  };
+
+  let timeLeft = 1500;
+  let timerId = null;
+  let isSubmitted = false;
+
+  function startQuiz() {
+    const nama = document.getElementById('nama').value.trim();
+    const presensi = document.getElementById('presensi').value.trim();
+    const kelas = document.getElementById('kelas').value.trim();
+    if(!nama || !presensi || !kelas) { alert("Harap isi semua data identitas!"); return; }
+
+    document.getElementById('identity-section').style.display = 'none';
+    document.getElementById('quiz-section').style.display = 'block';
+
+    const nav = document.getElementById('nav-grid');
+    for(let i=1; i<=10; i++){
+      nav.innerHTML += `<button type="button" class="nav-btn" id="nav-${i}" onclick="scrollToQ(${i})">${i}</button>`;
+    }
+
+    timerId = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    let m = Math.floor(timeLeft / 60);
+    let s = timeLeft % 60;
+    document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
+    if(timeLeft <= 0) {
+      clearInterval(timerId);
+      alert("Waktu habis! Jawaban Anda otomatis terkirim.");
+      submitQuiz(true);
+    }
+    timeLeft--;
+  }
+
+  function markAnswered(num) {
+    const btn = document.getElementById(`nav-${num}`);
+    if(num <= 5) {
+      const val = document.getElementById(`ans${num}`).value.trim();
+      if(val.length > 0) btn.classList.add('answered'); else btn.classList.remove('answered');
+    } else {
+      const checked = document.querySelectorAll(`input[name="q${num}"]:checked`);
+      if(checked.length > 0) btn.classList.add('answered'); else btn.classList.remove('answered');
+    }
+  }
+
+  function scrollToQ(num) {
+    document.getElementById(`q${num}`).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showConfirmModal() { if(!isSubmitted) document.getElementById('confirmModal').style.display = 'flex'; }
+  function closeConfirmModal() { document.getElementById('confirmModal').style.display = 'none'; }
+  function closeResultModal() { document.getElementById('resultModal').style.display = 'none'; }
+
+  function submitQuiz() {
+    if(isSubmitted) return;
+    isSubmitted = true;
+    clearInterval(timerId);
+    closeConfirmModal();
+
+    let scorePG = 0;
+    let userAnswers = {};
+
+    // Evaluasi Uraian & PG
+    for(let i=1; i<=5; i++){
+      document.getElementById(`ans${i}`).disabled = true;
+      document.getElementById(`exp${i}`).style.display = 'block';
+      userAnswers[`Q${i}`] = document.getElementById(`ans${i}`).value;
+    }
+
+    for(let i=6; i<=10; i++){
+      const checked = Array.from(document.querySelectorAll(`input[name="q${i}"]:checked`)).map(c => c.value);
+      userAnswers[`Q${i}`] = checked;
+      
+      // Disable checkboxes
+      document.querySelectorAll(`input[name="q${i}"]`).forEach(c => c.disabled = true);
+      document.getElementById(`exp${i}`).style.display = 'block';
+
+      // Koreksi Otomatis PG
+      const key = KEY_PG[i];
+      const isCorrect = checked.length === key.length && checked.every(val => key.includes(val));
+      const btn = document.getElementById(`nav-${i}`);
+      btn.classList.remove('answered');
+      if(isCorrect) {
+        scorePG += 20; // 5 soal PG = total 100 poin PG
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+    }
+
+    document.getElementById('scoreDisplay').innerText = scorePG;
+
+    const payload = {
+      tipeKuis: "Post-Test",
+      nama: document.getElementById('nama').value,
+      presensi: document.getElementById('presensi').value,
+      kelas: document.getElementById('kelas').value,
+      skor: scorePG,
+      jawaban: userAnswers
+    };
+
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+    .then(() => {})
+    .catch(err => console.error(err));
+
+    document.getElementById('resultModal').style.display = 'flex';
+  }
+</script>
+</body>
+</html>

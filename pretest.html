@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Test DPIB: Garis & Geometri</title>
+  <style>
+    :root { --primary: #1a73e8; --success: #34a853; --warning: #fbbc04; --gray: #e0e0e0; }
+    body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 15px; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gray); padding-bottom: 10px; }
+    .timer { font-size: 1.2rem; font-weight: bold; color: #d93025; background: #fce8e6; padding: 5px 12px; border-radius: 5px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    .nav-grid { display: flex; gap: 8px; flex-wrap: wrap; margin: 15px 0; }
+    .nav-btn { width: 40px; height: 40px; border: none; background: var(--gray); font-weight: bold; border-radius: 5px; cursor: pointer; }
+    .nav-btn.answered { background: var(--primary); color: #fff; }
+    .card { background: #fafafa; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    textarea { width: 100%; height: 90px; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; resize: vertical; }
+    .btn-submit { background: var(--success); color: #fff; padding: 12px 24px; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; width: 100%; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+    .modal-content { background: #fff; padding: 25px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; }
+    .modal-btns { display: flex; gap: 10px; margin-top: 15px; justify-content: center; }
+    .modal-btns button { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+    .explanation { display: none; background: #e8f0fe; border-left: 4px solid var(--primary); padding: 10px; margin-top: 10px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>Pre-Test: Garis & Geometri</h2>
+    <div class="timer" id="timer">15:00</div>
+  </div>
+
+  <div id="identity-section" style="margin-top: 15px;">
+    <h3>Identitas Siswa</h3>
+    <div class="form-group"><label>Nama Lengkap</label><input type="text" id="nama" required placeholder="Masukkan Nama"></div>
+    <div class="form-group"><label>Nomor Presensi</label><input type="text" id="presensi" required placeholder="Masukkan No. Presensi"></div>
+    <div class="form-group"><label>Kelas</label><input type="text" id="kelas" required placeholder="Contoh: X DPIB 1"></div>
+    <button class="btn-submit" onclick="startQuiz()">Mulai Kuis</button>
+  </div>
+
+  <div id="quiz-section" style="display:none;">
+    <h4>Navigasi Soal</h4>
+    <div class="nav-grid" id="nav-grid"></div>
+
+    <form id="quiz-form">
+      <div class="card" id="q1">
+        <p><b>1.</b> Jelaskan fungsi dan ketebalan standar dari <b>Garis Kontinu Tebal</b> pada gambar denah bangunan!</p>
+        <textarea id="ans1" oninput="markAnswered(1)"></textarea>
+        <div class="explanation" id="exp1"><b>Kunci & Pembahasan:</b> Ketebalan 0,6–0,8 mm. Berfungsi untuk pasangan dinding tebal (bata/hebel) terpotong horizontal, kolom struktur utama (15x15 cm), dan garis bingkai (border line). Tujuan visualnya menjadi elemen paling kontras agar denah terlihat jelas.</div>
+      </div>
+      <div class="card" id="q2">
+        <p><b>2.</b> Sebutkan 3 elemen denah yang digambar menggunakan <b>Garis Putus-Putus</b> beserta tujuan visualnya!</p>
+        <textarea id="ans2" oninput="markAnswered(2)"></textarea>
+        <div class="explanation" id="exp2"><b>Kunci & Pembahasan:</b> Elemen: Proyeksi tritisan/atap, batas void lantai atas, kanopi carport, atau kitchen set gantung. Ketebalan 0,3–0,4 mm. Tujuan visual: Memberi tahu pelaksana bahwa ada struktur fisik di atas/bawah ruang meskipun tidak terpotong lantai denah.</div>
+      </div>
+      <div class="card" id="q3">
+        <p><b>3.</b> Apakah fungsi dari <b>Garis As / Garis Sumbu (Putus-Titik)</b> pada gambar denah?</p>
+        <textarea id="ans3" oninput="markAnswered(3)"></textarea>
+        <div class="explanation" id="exp3"><b>Kunci & Pembahasan:</b> Ketebalan 0,3–0,4 mm. Berfungsi sebagai garis grid penanda tengah kolom/dinding (notasi angka/huruf). Berperan sebagai panduan acuan letak titik fondasi dan dinding saat pengukuran lapangan (bowplank).</div>
+      </div>
+      <div class="card" id="q4">
+        <p><b>4.</b> Mengapa bentuk geometri <b>Segitiga</b> paling banyak digunakan pada rangka atap (kuda-kuda) dan bracing?</p>
+        <textarea id="ans4" oninput="markAnswered(4)"></textarea>
+        <div class="explanation" id="exp4"><b>Kunci & Pembahasan:</b> Segitiga merupakan bentuk struktur paling kaku dan stabil. Aplikasi bracing segitiga menahan gaya lateral seperti angin atau gempa bumi.</div>
+      </div>
+      <div class="card" id="q5">
+        <p><b>5.</b> Sebutkan penerapan bentuk geometri <b>Trapesium</b> dalam konstruksi bangunan!</p>
+        <textarea id="ans5" oninput="markAnswered(5)"></textarea>
+        <div class="explanation" id="exp5"><b>Kunci & Pembahasan:</b> Trapesium identik dengan gambar potongan fondasi batu kali dan bentuk bidang miring pada atap perisai (limasan).</div>
+      </div>
+    </form>
+    <button class="btn-submit" onclick="showConfirmModal()">Selesai & Kumpulkan Kuis</button>
+  </div>
+</div>
+
+<div class="modal" id="confirmModal">
+  <div class="modal-content">
+    <h3>Konfirmasi Pengumpulan</h3>
+    <p>Apakah Anda yakin ingin mengumpulkan jawaban Pre-Test ini?</p>
+    <div class="modal-btns">
+      <button style="background:#ccc" onclick="closeConfirmModal()">Batal</button>
+      <button style="background:var(--success); color:#fff" onclick="submitQuiz()">Ya, Kumpulkan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modal-content">
+    <h3>Kuis Berhasil Dikumpulkan!</h3>
+    <p>Jawaban Anda telah terrekam dalam sistem. Kunci jawaban dan pembahasan kini telah terbuka. Silakan klik nomor soal untuk meninjau pembahasan.</p>
+    <button style="background:var(--primary); color:#fff" onclick="closeResultModal()">Lihat Pembahasan</button>
+  </div>
+</div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzasHeIMVrl_FUCrsYKI3ac-rZxeqEo0BDyiT6BBsWnjZlywgkW0HwcZ128yCZFnaGJhA/exec";
+  let timeLeft = 900;
+  let timerId = null;
+  let isSubmitted = false;
+
+  function startQuiz() {
+    const nama = document.getElementById('nama').value.trim();
+    const presensi = document.getElementById('presensi').value.trim();
+    const kelas = document.getElementById('kelas').value.trim();
+    if(!nama || !presensi || !kelas) { alert("Harap isi semua data identitas!"); return; }
+
+    document.getElementById('identity-section').style.display = 'none';
+    document.getElementById('quiz-section').style.display = 'block';
+    
+    // Init nav
+    const nav = document.getElementById('nav-grid');
+    for(let i=1; i<=5; i++){
+      nav.innerHTML += `<button type="button" class="nav-btn" id="nav-${i}" onclick="scrollToQ(${i})">${i}</button>`;
+    }
+
+    timerId = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    let m = Math.floor(timeLeft / 60);
+    let s = timeLeft % 60;
+    document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
+    if(timeLeft <= 0) {
+      clearInterval(timerId);
+      alert("Waktu habis! Jawaban Anda otomatis terkirim.");
+      submitQuiz(true);
+    }
+    timeLeft--;
+  }
+
+  function markAnswered(num) {
+    const val = document.getElementById(`ans${num}`).value.trim();
+    const btn = document.getElementById(`nav-${num}`);
+    if(val.length > 0) btn.classList.add('answered');
+    else btn.classList.remove('answered');
+  }
+
+  function scrollToQ(num) {
+    document.getElementById(`q${num}`).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showConfirmModal() { if(!isSubmitted) document.getElementById('confirmModal').style.display = 'flex'; }
+  function closeConfirmModal() { document.getElementById('confirmModal').style.display = 'none'; }
+  function closeResultModal() { document.getElementById('resultModal').style.display = 'none'; }
+
+  function submitQuiz(auto = false) {
+    if(isSubmitted) return;
+    isSubmitted = true;
+    clearInterval(timerId);
+    closeConfirmModal();
+
+    // Lock Input
+    for(let i=1; i<=5; i++){
+      document.getElementById(`ans${i}`).disabled = true;
+      document.getElementById(`exp${i}`).style.display = 'block';
+    }
+
+    const payload = {
+      tipeKuis: "Pre-Test",
+      nama: document.getElementById('nama').value,
+      presensi: document.getElementById('presensi').value,
+      kelas: document.getElementById('kelas').value,
+      skor: "N/A (Uraian)",
+      jawaban: {
+        Q1: document.getElementById('ans1').value,
+        Q2: document.getElementById('ans2').value,
+        Q3: document.getElementById('ans3').value,
+        Q4: document.getElementById('ans4').value,
+        Q5: document.getElementById('ans5').value
+      }
+    };
+
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+    .then(() => {})
+    .catch(err => console.error(err));
+
+    document.getElementById('resultModal').style.display = 'flex';
+  }
+</script>
+</body>
+</html>
